@@ -1,2 +1,2 @@
-"variable",                  "source", "type"
-"death_reported_date",       "db",     "Date"
+"variable",                  "source", "type",      "load"
+"death_reported_date",       "db",     "Date",      1

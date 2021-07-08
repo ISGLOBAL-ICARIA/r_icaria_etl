@@ -1,14 +1,14 @@
-"variable",                  "source", "type"
-"record_id",                 "db",     "integer"
-"hf",                        "meta",   "character"
-"hf_bombali",                "db",     "integer"
-"hf_port_loko",              "db",     "integer"
-"hf_tonkolili",              "db",     "integer"
-"screening_date",            "db",     "Date"
-"n_penta1",                  "db",     "integer"
-"n_approached",              "db",     "integer"
-"n_underweight",             "db",     "integer"
-"n_over_age",                "db",     "integer"
-"n_consent",                 "db",     "integer"
-"n_screening_failures",      "db",     "integer"
-"n_previously_invited",      "db",     "integer"
+"variable",                  "source", "type",      "load"
+"record_id",                 "db",     "integer",   1
+"hf",                        "meta",   "character", 1
+"hf_bombali",                "db",     "integer",   0
+"hf_port_loko",              "db",     "integer",   0
+"hf_tonkolili",              "db",     "integer",   0
+"screening_date",            "db",     "Date",      1
+"n_penta1",                  "db",     "integer",   1
+"n_approached",              "db",     "integer",   1
+"n_underweight",             "db",     "integer",   1
+"n_over_age",                "db",     "integer",   1
+"n_consent",                 "db",     "integer",   1
+"n_screening_failures",      "db",     "integer",   1
+"n_previously_invited",      "db",     "integer",   1

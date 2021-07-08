@@ -1,20 +1,20 @@
-"variable",                  "source", "type"
-#"district",                  "meta",   "factor"
-"hf",                        "meta",   "factor"
-"record_id",                 "db",     "integer"
-"screening_number",          "db",     "character"
-"screening_consent",         "db",     "logical"
-"child_dob",                 "db",     "Date"
-"screening_age_weeks_new_2", "db",     "integer"
-"ic_age_10w",                "db",     "logical"
-"ic_age",                    "db",     "logical"
-"screening_weight",          "db",     "numeric"
-"ic_weight",                 "db",     "logical"
-"ic_residency_now",          "db",     "logical",
-"ec_other_study",            "db",     "logical",
-"ec_allergies",              "db",     "logical",
-"ec_serious_disease",        "db",     "logical",
-"ec_acute_illness",          "db",     "logical"
-"eligible",                  "db",     "logical"
-"study_number",              "db",     "character"
-"screening_date",            "db",     "Date"
+"variable",                  "source", "type",      "load"
+#"district",                  "meta",   "factor",    1
+"hf",                        "meta",   "factor",    1
+"record_id",                 "db",     "integer",   1
+"screening_number",          "db",     "character", 1
+"screening_consent",         "db",     "logical",   1
+"child_dob",                 "db",     "Date",      1
+"screening_age_weeks_new_2", "db",     "integer",   1
+"ic_age_10w",                "db",     "logical",   1
+"ic_age",                    "db",     "logical",   1
+"screening_weight",          "db",     "numeric",   1
+"ic_weight",                 "db",     "logical",   1
+"ic_residency_now",          "db",     "logical",   1
+"ec_other_study",            "db",     "logical",   1
+"ec_allergies",              "db",     "logical",   1
+"ec_serious_disease",        "db",     "logical",   1
+"ec_acute_illness",          "db",     "logical",   1
+"eligible",                  "db",     "logical",   1
+"study_number",              "db",     "character", 1
+"screening_date",            "db",     "Date",      1

@@ -1,4 +1,4 @@
-"variable",                  "source", "type"
-"int_azi",                   "db",     "logical"
-"int_random_letter",         "db",     "character"
-"int_date",                  "db",     "Date"
+"variable",                  "source", "type",      "load"
+"int_azi",                   "db",     "logical",   1
+"int_random_letter",         "db",     "character", 1
+"int_date",                  "db",     "Date",      1

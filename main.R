@@ -129,6 +129,10 @@ saes$study_number <- substr(saes$sae_number, 1, 9)
 saes$record_id <- as.integer(saes$record_id)
 saes <- saes[order(saes$hf, saes$record_id), 
              c("hf", "record_id", "study_number", sae$variable)]
+
+# Get Screening Log information to create the Screening Log table
+logs <- data.log[which(!is.na(data.log$screening_date)), 
+                 screening.log$variable[which(screening.log$load == 1)]]
                            
 
 # Load data

@@ -1,10 +1,10 @@
-"variable",                  "source", "type"
-"sae_number",                "db",     "character"
-"sae_report_type",           "db",     "factor"
-"sae_icd_10",                "db",     "factor"
-"sae_onset",                 "db",     "Date"
-"sae_death",                 "db",     "logical"
-"sae_death_date",            "db",     "Date"
-"sae_relationship",          "db",     "factor"
-"sae_severity",              "db",     "factor"
-"sae_action",                "db",     "factor"
+"variable",                  "source", "type",      "load"
+"sae_number",                "db",     "character", 1
+"sae_report_type",           "db",     "factor",    1
+"sae_icd_10",                "db",     "factor",    1
+"sae_onset",                 "db",     "Date",      1
+"sae_death",                 "db",     "logical",   1
+"sae_death_date",            "db",     "Date",      1
+"sae_relationship",          "db",     "factor",    1
+"sae_severity",              "db",     "factor",    1
+"sae_action",                "db",     "factor",    1

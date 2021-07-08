@@ -1,3 +1,3 @@
-"variable",                  "source", "type"
-"wdrawal_reason",            "db",     "factor"
-"wdrawal_reported_date",     "db",     "Date"
+"variable",                  "source", "type",      "load"
+"wdrawal_reason",            "db",     "factor",    1
+"wdrawal_reported_date",     "db",     "Date",      1
