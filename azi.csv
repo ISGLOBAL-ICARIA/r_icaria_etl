@@ -1,0 +1,4 @@
+"variable",                  "source", "type"
+"int_azi",                   "db",     "logical"
+"int_random_letter",         "db",     "character"
+"int_date",                  "db",     "Date"

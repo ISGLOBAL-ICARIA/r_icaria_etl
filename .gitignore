@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+tokens.R
+*.csv
+!participant.csv
+!withdrawal.csv
+!death.csv
+!azi.csv
+!sae.csv
