@@ -37,14 +37,35 @@ ExportDataAllHealthFacilities <- function(redcap.api.url, redcap.tokens,
   
   data <- data.frame()
   for (hf in names(redcap.tokens)) {
-    print(paste("Extracting data from", hf))
-    hf.data <- ReadData(redcap.api.url, redcap.tokens[[hf]], variables, types)
-    # TODO: Bind column for the HF district
-    hf.data <- cbind(hf = hf, hf.data)
-    data <- rbind(data, hf.data)
+    if (hf != "profile") {
+      print(paste("Extracting data from", hf))
+      hf.data <- ReadData(redcap.api.url, redcap.tokens[[hf]], variables, types)
+      # TODO: Bind column for the HF district
+      hf.data <- cbind(hf = hf, hf.data)
+      data <- rbind(data, hf.data)
+    }
   }
   
   return(data)
+}
+
+ExportDataScreeningLog <- function(redcap.api.url, redcap.token, 
+                                          variables, types) {
+  
+  data <- data.frame()
+  print("Extracting data from Screening Log")
+  log.data <- ReadData(redcap.api.url, redcap.token, variables, types)
+  
+  # Collapse HF IDs in the hf column no matter in which district the HF is and
+  # format the code accrodingly HFXX
+  log.data$hf <- rowSums(
+    x     = log.data[, c("hf_bombali", "hf_tonkolili", "hf_port_loko")], 
+    na.rm = T
+  )
+  log.data$hf <- str_pad(log.data$hf, 2, "left", "0")
+  log.data$hf <- paste0("HF", log.data$hf)
+  
+  return(log.data)
 }
 
 TransformRemoveEmptyRows <- function(data) {

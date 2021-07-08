@@ -33,18 +33,39 @@ sae <- read.csv(
   comment.char = "#"
 )
 
-model <- rbind(participant, azi, withdrawal, death, sae)
+screening.log <- read.csv(
+  file             = "screening_log.csv",
+  stringsAsFactors = F,
+  strip.white      = T,
+  comment.char = "#"
+)
+
+model.trial <- rbind(participant, azi, withdrawal, death, sae)
+model.log <- rbind(screening.log)
 
 # EXTRACT DATA -----------------------------------------------------------------
 # Extract data from all databases (one per ICARIA HF) accroding to the data
 # model to be produced
-db.filter <- which(model$source == "db")
-db.variables <- model$type[db.filter]
-names(db.variables) <- model$variable[db.filter]
+db.filter <- which(model.trial$source == "db")
+db.variables <- model.trial$type[db.filter]
+names(db.variables) <- model.trial$variable[db.filter]
 
 data <- ExportDataAllHealthFacilities(
   redcap.api.url = kRedcapAPIURL, 
   redcap.tokens  = kRedcapTokens, 
+  variables      = names(db.variables),
+  # TODO: Force interpretation of column types to improve efficiency while 
+  #       reading and bad type casting
+  types          = NA
+)
+
+db.filter <- which(model.log$source == "db")
+db.variables <- model.log$type[db.filter]
+names(db.variables) <- model.log$variable[db.filter]
+
+data.log <- ExportDataScreeningLog(
+  redcap.api.url = kRedcapAPIURL, 
+  redcap.token   = kRedcapTokens[["profile"]], 
   variables      = names(db.variables),
   # TODO: Force interpretation of column types to improve efficiency while 
   #       reading and bad type casting
