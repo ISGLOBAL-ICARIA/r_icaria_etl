@@ -66,6 +66,19 @@ ExportDataAllHealthFacilities <- function(redcap.api.url, redcap.tokens,
 
 ExportDataScreeningLog <- function(redcap.api.url, redcap.token, 
                                           variables, types) {
+  # Export data from the ICARIA Trial Profile project that stores aggregated 
+  # dailyd data coming from the screening log by health facility.
+  #
+  # Args:
+  #   redcap.api.url: String representing the URL to access the REDCap API.
+  #   redcap.token:   Strings representing the token to access the ICARIA Trial 
+  #                   Profile REDCap project.
+  #   variables:      List of variables to be extracted from the REDCap project.
+  #   types:          List of types of the variables to be extracted from the
+  #                   REDCap project.
+  # 
+  # Returns:
+  #   Data frame with the daily aggregated data of the screening log by HF.
   
   data <- data.frame()
   print("Extracting data from Screening Log")
