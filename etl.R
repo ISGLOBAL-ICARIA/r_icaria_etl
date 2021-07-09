@@ -88,9 +88,20 @@ ExportDataScreeningLog <- function(redcap.api.url, redcap.token,
 }
 
 TransformRemoveEmptyRows <- function(data) {
+  # Remove empty rows from the HFs data frame according to the following 
+  # definitions of empty rows:
+  #   - Definition 1: Any row in which we don't have any of the complete 
+  #                   variables equals to 2 (Complete).
+  #   - Definition 2: Any intervention row in which AZi/Pbo was not 
+  #                   administered, i.e. we have int_date but int_azi != 1.
+  #
+  # Args:
+  #   data: Data frame with the trial data of all ICARIA Health Facilites.
+  # 
+  # Returns:
+  #   Data frame without the empty rows.
   
-  # Empty row definition 1: Any row in which we don't have any of the complete 
-  #                         variables equals to 2 (Complete)
+  # Empty row definition 1
   # TODO: Improve filtering moving out the list of complete colum names
   empty.filter1 <- data$screening_complete == 2 | 
     data$intervention_complete == 2 | data$sae_complete == 2 | 
@@ -98,8 +109,7 @@ TransformRemoveEmptyRows <- function(data) {
   
   aux <- data[which(empty.filter1), ]
   
-  # Empty row definition 2: Any intervention row in which AZi/Pbo was not 
-  #                         administered, i.e. we have int_date but int_azi != 1
+  # Empty row definition 2
   empty.filter2 <- (is.na(aux$int_date) & is.na(aux$int_azi)) | 
     (!is.na(aux$int_date) & aux$int_azi == 1)
   
