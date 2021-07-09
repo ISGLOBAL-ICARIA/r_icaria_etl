@@ -5,6 +5,21 @@ library(tidyr)
 
 ReadData <- function(api.url, api.token, relevant.fields, 
                      relevant.field.types) {
+  # Read data through the REDCap API. It retrieves only the indicated fields and
+  # casts them according to the provided data types.
+  #
+  # Args:
+  #   api.url:              String representing the URL to access the REDCap 
+  #                         API.
+  #   api.token:            Strings representing the token to access ICARIA 
+  #                         HF-specific REDCap project.
+  #   relevant.fields:      List of variables to be extracted from the REDCap 
+  #                         project.
+  #   relevant.field.types: List of types of the variables to be extracted from 
+  #                         the REDCap project.
+  # 
+  # Returns:
+  #   Data frame with the ICARIA HF data.
   
   rcon <- redcapConnection(api.url, api.token)
   data <- exportRecords(
