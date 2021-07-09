@@ -139,8 +139,19 @@ TransformAddLeadingZeros <- function(data, column, width) {
 }
 
 TransformCollapseColumns <- function(data, columns, new.column) {
-  # Collapse HF IDs in the hf column no matter in which district the HF is and
-  # format the code accrodingly HFXX
+  # Collapse the indicated set of columns in the new indicated column. This is
+  # useful when the variable values are spread in several REDCap fields.
+  #
+  # Args:
+  #   data:       Data frame with the data.
+  #   columns:    Vector with the names of the columns to be collapsed.
+  #   new.column: String representing the name of the new column to be created
+  #               and where the collapse is going to be done.
+  # 
+  # Returns:
+  #   Data frame equals to the one passed to the function but with a new column
+  #   in which the spread values have been collapsed.
+  
   data[new.column] <- rowSums(
     x     = data[, columns], 
     na.rm = T
