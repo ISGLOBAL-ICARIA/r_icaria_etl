@@ -119,6 +119,18 @@ TransformRemoveEmptyRows <- function(data) {
 }
 
 TransformAddLeadingZeros <- function(data, column, width) {
+  # Add leading zeros to all the values of the indicated column to have the
+  # defined fixed width.
+  #
+  # Args:
+  #   data:   Data frame with the data.
+  #   column: String representing the name of the column in which the leading
+  #           zeros have to be added.
+  #   width:  Integer representing the fixed width of the values after adding
+  #           the leading zeros.
+  # 
+  # Returns:
+  #   Data frame with the leading zeros in the indicated column.
   
   aux <- data
   aux[[column]] <- str_pad(aux[[column]], width, "left", "0")
