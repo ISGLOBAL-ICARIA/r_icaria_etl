@@ -56,15 +56,6 @@ ExportDataScreeningLog <- function(redcap.api.url, redcap.token,
   print("Extracting data from Screening Log")
   log.data <- ReadData(redcap.api.url, redcap.token, variables, types)
   
-  # Collapse HF IDs in the hf column no matter in which district the HF is and
-  # format the code accrodingly HFXX
-  log.data$hf <- rowSums(
-    x     = log.data[, c("hf_bombali", "hf_tonkolili", "hf_port_loko")], 
-    na.rm = T
-  )
-  log.data$hf <- str_pad(log.data$hf, 2, "left", "0")
-  log.data$hf <- paste0("HF", log.data$hf)
-  
   return(log.data)
 }
 
@@ -95,6 +86,23 @@ TransformAddLeadingZeros <- function(data, column, width) {
   aux[[column]] <- str_pad(aux[[column]], width, "left", "0")
   
   return(aux)
+}
+
+TransformCollapseColumns <- function(data, columns, new.column) {
+  # Collapse HF IDs in the hf column no matter in which district the HF is and
+  # format the code accrodingly HFXX
+  data[new.column] <- rowSums(
+    x     = data[, columns], 
+    na.rm = T
+  )
+  
+  return(data)
+}
+
+TransformAddPrefix <- function(data, column, prefix) {
+  data[column] <- paste0("HF", data[[column]])
+  
+  return(data)
 }
 
 TransformPivotAZiVars <- function(data) {

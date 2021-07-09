@@ -59,11 +59,13 @@ data <- ExportDataAllHealthFacilities(
   types          = NA
 )
 
+# Extract data from the screening log database according to the data model to be
+# produced
 db.filter <- which(model.log$source == "db")
 db.variables <- model.log$type[db.filter]
 names(db.variables) <- model.log$variable[db.filter]
 
-data.log <- ExportDataScreeningLog(
+log <- ExportDataScreeningLog(
   redcap.api.url = kRedcapAPIURL, 
   redcap.token   = kRedcapTokens[["profile"]], 
   variables      = names(db.variables),
@@ -79,6 +81,16 @@ data <- TransformRemoveEmptyRows(data)
 #       as this variables will be exported as a character with the corresponding
 #       leading zeros.
 data <- TransformAddLeadingZeros(data, "screening_number", 5)
+
+log <- TransformCollapseColumns(
+  data       = log, 
+  columns    = c("hf_bombali", "hf_tonkolili", "hf_port_loko"), 
+  new.column = "hf"
+)
+
+log <- TransformAddLeadingZeros(log, "hf", 2)
+
+log <- TransformAddPrefix(log, "hf", "HF")
 
 
 # ORGANIZE DATA (TABLES): PARTICIPANTS AND SAES --------------------------------
@@ -131,7 +143,7 @@ saes <- saes[order(saes$hf, saes$record_id),
              c("hf", "record_id", "study_number", sae$variable)]
 
 # Get Screening Log information to create the Screening Log table
-logs <- data.log[which(!is.na(data.log$screening_date)), 
+logs <- log[which(!is.na(log$screening_date)), 
                  screening.log$variable[which(screening.log$load == 1)]]
                            
 
