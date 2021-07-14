@@ -105,7 +105,8 @@ TransformRemoveEmptyRows <- function(data) {
   # TODO: Improve filtering moving out the list of complete colum names
   empty.filter1 <- data$screening_complete == 2 | 
     data$intervention_complete == 2 | data$sae_complete == 2 | 
-    data$withdrawal_complete == 2 | data$death_complete == 2
+    data$withdrawal_complete == 2 | data$death_complete == 2 |
+    data$household_follow_up_complete == 2
   
   aux <- data[which(empty.filter1), ]
   

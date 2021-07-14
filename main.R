@@ -6,31 +6,37 @@ participant <- read.csv(
   file             = "participant.csv", 
   stringsAsFactors = F, 
   strip.white      = T,
-  comment.char = "#"
+  comment.char     = "#"
 )
 azi <- read.csv(
   file             = "azi.csv", 
   stringsAsFactors = F, 
   strip.white      = T,
-  comment.char = "#"
+  comment.char     = "#"
 )
 withdrawal <- read.csv(
   file             = "withdrawal.csv", 
   stringsAsFactors = F, 
   strip.white      = T,
-  comment.char = "#"
+  comment.char     = "#"
 )
 death <- read.csv(
   file             = "death.csv", 
   stringsAsFactors = F, 
   strip.white      = T,
-  comment.char = "#"
+  comment.char     = "#"
 )
 sae <- read.csv(
   file             = "sae.csv",
   stringsAsFactors = F,
   strip.white      = T,
-  comment.char = "#"
+  comment.char     = "#"
+)
+household <- read.csv(
+  file             = "household.csv",
+  stringsAsFactors = F,
+  strip.white      = T,
+  comment.char     = "#"
 )
 
 screening.log <- read.csv(
@@ -40,7 +46,7 @@ screening.log <- read.csv(
   comment.char = "#"
 )
 
-model.trial <- rbind(participant, azi, withdrawal, death, sae)
+model.trial <- rbind(participant, azi, withdrawal, death, sae, household)
 model.log <- rbind(screening.log)
 
 # EXTRACT DATA -----------------------------------------------------------------
@@ -104,7 +110,7 @@ participants <- merge(
   x     = participants, 
   y     = withdrawals, 
   by    = c("hf", "record_id"), 
-  all.x = TRUE
+  all.x = T
 )
 
 deaths <- data[which(!is.na(data$death_reported_date)), 
@@ -113,7 +119,7 @@ participants <- merge(
   x     = participants, 
   y     = deaths, 
   by    = c("hf", "record_id"), 
-  all.x = TRUE
+  all.x = T
 )
 
 # Get all AZi/Pbo doses by participant in a one-row-per-participant fashion and
@@ -123,7 +129,19 @@ participants <- merge(
   x     = participants, 
   y     = azi.doses, 
   by    = c("hf", "record_id"), 
-  all.x = TRUE
+  all.x = T
+)
+
+# Merge last household visit at the end of the follow up, 
+# i.e. event HH-At 18th month of age
+end.fu.visits <- data[
+  which(data$redcap_event_name == "hhat_18th_month_of_arm_1"), 
+  c("hf", "record_id", household$variable)]
+participants <- merge(
+  x     = participants,
+  y     = end.fu.visits,
+  by    = c("hf", "record_id"),
+  all.x = T
 )
 
 # Order participants columns and rows
@@ -148,3 +166,34 @@ logs <- log[which(!is.na(log$screening_date)),
                            
 
 # Load data
+kVersionFormat <- "%Y%m%d"
+kCSVExtension <- ".csv"
+kParticipantsFile <- "participants"
+kSAEs <- "saes"
+kLog <- "screening_log"
+
+data.date <- Sys.time()
+
+participants.filename <- paste0(
+  kParticipantsFile, 
+  "_", 
+  format(data.date, format = kVersionFormat), 
+  kCSVExtension
+)
+write.csv(participants, file = participants.filename, row.names = F)
+
+saes.filename <- paste0(
+  kSAEs, 
+  "_", 
+  format(data.date, format = kVersionFormat), 
+  kCSVExtension
+)
+write.csv(saes, file = saes.filename, row.names = F)
+
+log.filename <- paste0(
+  kLog, 
+  "_", 
+  format(data.date, format = kVersionFormat), 
+  kCSVExtension
+)
+write.csv(logs, file = log.filename, row.names = F)

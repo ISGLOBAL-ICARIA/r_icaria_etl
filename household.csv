@@ -1,0 +1,5 @@
+"variable",                  "source", "type",      "load"
+"hh_child_seen",             "db",     "logical",   1
+"hh_why_not_child_seen",     "db",     "factor",    1
+"hh_appointment",            "db",     "logical",   1
+"hh_date",                   "db",     "Date",      1
