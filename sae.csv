@@ -3,6 +3,7 @@
 "sae_report_type",           "db",     "factor",    1
 "sae_med_terms",             "db",     "character", 1
 "sae_icd_10",                "db",     "factor",    1
+"sae_icd_10_desc",           "meta",   "character", 1
 "sae_onset",                 "db",     "Date",      1
 "sae_death",                 "db",     "logical",   1
 "sae_death_date",            "db",     "Date",      1

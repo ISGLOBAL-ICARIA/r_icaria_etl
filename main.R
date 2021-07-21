@@ -88,6 +88,14 @@ data <- TransformRemoveEmptyRows(data)
 #       leading zeros.
 data <- TransformAddLeadingZeros(data, "screening_number", 5)
 
+data <- TransformAddICD10Description(
+  data              = data, 
+  icd.10.column     = "sae_icd_10", 
+  new.desc.column   = "sae_icd_10_desc", 
+  bioportal.api.url = kBioportalAPIURL, 
+  bioportal.api.key = kBioportalAPIKey
+)
+
 log <- TransformCollapseColumns(
   data       = log, 
   columns    = c("hf_bombali", "hf_tonkolili", "hf_port_loko"), 
@@ -147,9 +155,6 @@ participants <- merge(
 # Order participants columns and rows
 participants$record_id <- as.integer(participants$record_id)
 participants <- participants[order(participants$hf, participants$record_id), ]
-
-
-# TODO: Merge End of Follow Up data - last visit to the household
 
 # Get SAE information to create the SAEs table
 saes <- data[which(data$sae_complete == 2), c("hf", "record_id", sae$variable)]

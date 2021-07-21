@@ -2,6 +2,8 @@ library(redcapAPI)
 library(stringr)
 library(dplyr)
 library(tidyr)
+library(httr)
+library(jsonlite)
 
 ReadData <- function(api.url, api.token, relevant.fields, 
                      relevant.field.types) {
@@ -202,6 +204,46 @@ TransformPivotAZiVars <- function(data) {
                            "azi2_date", "azi3_date")]
   
   return(aux.wide)
+}
+
+TransformAddICD10Description <- function(data, icd.10.column, new.desc.column, 
+                                         bioportal.api.url, bioportal.api.key) {
+  # Retrieve the ICD10 code description from the BioPortal API and add a new
+  # column to the data frame with this data.
+  #
+  # Args:
+  #   data:              Data frame with the data.
+  #   icd.10.column:     String representing the name of the column in which the
+  #                      ICD10 code is stored.
+  #   new.desc.column:   String representing the name of the new column to be 
+  #                      created where the ICD10 code description will be 
+  #                      stored.
+  #   bioportal.api.url: String representing the BioPortal's API URL.
+  #   bioportal.api.key: String representing the key to authenticate in the 
+  #                      BioPortal's API.
+  # 
+  # Returns:
+  #   Data frame equals to the one passed to the function but with a new column
+  #   in which the ICD10 code description has been stored.
+
+  kICD10BioportalOntology <- "ICD10"
+  
+  icd.10.codes <- unique(data[!is.na(data[icd.10.column]), icd.10.column])
+  for (icd.10.code in icd.10.codes) {
+    print(paste("Retrieving BioPortal", kICD10BioportalOntology, 
+                "Ontology Class for code", icd.10.code))
+    res = GET(bioportal.api.url, query = list(
+      apikey     = bioportal.api.key, 
+      ontologies = kICD10BioportalOntology, 
+      q          = icd.10.code
+    ))
+    
+    icd.10.class <- fromJSON(rawToChar(res$content))
+    data[which(data[icd.10.column] == icd.10.code), new.desc.column] <- 
+      icd.10.class$collection$prefLabel[1]
+  }
+  
+  return(data)
 }
 
 TransformCreateParticipantTable <- function(data) {
