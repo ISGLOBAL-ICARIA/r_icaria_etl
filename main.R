@@ -1,6 +1,8 @@
 source("etl.R")
 source("tokens.R")
 
+library(googledrive)
+
 # READ MODEL (ENTITIES) --------------------------------------------------------
 participant <- read.csv(
   file             = "participant.csv", 
@@ -170,15 +172,16 @@ logs <- log[which(!is.na(log$screening_date)),
                  screening.log$variable[which(screening.log$load == 1)]]
                            
 
-# Load data
+# LOAD DATA --------------------------------------------------------------------
 kVersionFormat <- "%Y%m%d"
 kCSVExtension <- ".csv"
 kParticipantsFile <- "participants"
-kSAEs <- "saes"
-kLog <- "screening_log"
+kSAEsFile <- "saes"
+kLogFile <- "screening_log"
 
 data.date <- Sys.time()
 
+# Create data files
 participants.filename <- paste0(
   kParticipantsFile, 
   "_", 
@@ -188,7 +191,7 @@ participants.filename <- paste0(
 write.csv(participants, file = participants.filename, row.names = F)
 
 saes.filename <- paste0(
-  kSAEs, 
+  kSAEsFile, 
   "_", 
   format(data.date, format = kVersionFormat), 
   kCSVExtension
@@ -196,9 +199,31 @@ saes.filename <- paste0(
 write.csv(saes, file = saes.filename, row.names = F)
 
 log.filename <- paste0(
-  kLog, 
+  kLogFile, 
   "_", 
   format(data.date, format = kVersionFormat), 
   kCSVExtension
 )
 write.csv(logs, file = log.filename, row.names = F)
+
+# Authorize google drive to view and manage the ICARIA Drive files
+
+
+# Upload files to Google Drive 
+kDriveDataPath <- "/Data"
+
+year <- format(data.date, format = "%Y")
+month <- format(data.date, format = "%m")
+participants.path <- paste(
+  kDriveDataPath, 
+  kParticipantsFile, 
+  year, 
+  month, 
+  sep = "/"
+)
+participants.path <- paste0(participants.path, "/")
+
+drive <- drive_upload(
+  media = participants.filename,
+  path  = participants.path
+)
