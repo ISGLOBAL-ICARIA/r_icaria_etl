@@ -11,3 +11,4 @@ tokens.R
 !sae.csv
 !screening_log.csv
 !household.csv
+r-icaria-etl-*.json
