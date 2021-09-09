@@ -1,8 +1,6 @@
 source("etl.R")
 source("tokens.R")
 
-library(googledrive)
-
 # READ MODEL (ENTITIES) --------------------------------------------------------
 participant <- read.csv(
   file             = "participant.csv", 
@@ -178,6 +176,7 @@ kCSVExtension <- ".csv"
 kParticipantsFile <- "participants"
 kSAEsFile <- "saes"
 kLogFile <- "screening_log"
+kDriveDataPath <- "Data"
 
 data.date <- Sys.time()
 
@@ -206,27 +205,8 @@ log.filename <- paste0(
 )
 write.csv(logs, file = log.filename, row.names = F)
 
-# Authorize google drive to view and manage the ICARIA Drive files
-options(gargle_verbosity = "debug")
-print("Authorizing into Google")
-drive_auth(path = kGoogleServiceAccountToken)
-
-# Upload files to Google Drive 
-kDriveDataPath <- "Data"
-
-year <- format(data.date, format = "%Y")
-month <- format(data.date, format = "%m")
-participants.path <- paste(
-  kDriveDataPath, 
-  kParticipantsFile, 
-  year, 
-  month, 
-  sep = "/"
-)
-participants.path <- paste0(participants.path, "/")
-
-print(paste("Writing CSV files into Google:", participants.filename, "at",  participants.path))
-drive <- drive_upload(
-  media = participants.filename,
-  path  = participants.path
-)
+# Load data files
+LoadAuthorize()
+LoadDataFile(data.date, kDriveDataPath, kParticipantsFile, participants.filename)
+LoadDataFile(data.date, kDriveDataPath, kSAEsFile, saes.filename)
+LoadDataFile(data.date, kDriveDataPath, kLogFile, log.filename)

@@ -4,6 +4,7 @@ library(dplyr)
 library(tidyr)
 library(httr)
 library(jsonlite)
+library(googledrive)
 
 ReadData <- function(api.url, api.token, relevant.fields, 
                      relevant.field.types) {
@@ -253,4 +254,39 @@ TransformCreateParticipantTable <- function(data) {
 
 TransformCreateSAETable <- function(data) {
   
+}
+
+LoadAuthorize <- function() {
+  # Authorize google drive to view and manage the ICARIA Drive files
+  options(gargle_verbosity = "debug")
+  print("Authorizing into Google")
+  drive_auth(path = kGoogleServiceAccountToken)
+}
+
+LoadDataFile <- function(data.date, drive.data.path, file.path, filename) {
+  browser()
+  # Build Google Drive file path and check if it exits or create it otherwise
+  year <- format(data.date, format = "%Y")
+  month <- format(data.date, format = "%m")
+  
+  file.path <- paste(drive.data.path, file.path, year, sep = "/")
+  drive.path <- drive_get(file.path)
+  if (nrow(drive.path) == 0) {
+    drive_mkdir(file.path)
+  }
+  
+  file.path <- paste(file.path, month, sep = "/")
+  drive.path <- drive_get(file.path)
+  if (nrow(drive.path) == 0) {
+    drive_mkdir(file.path)
+  }
+  
+  file.path <- paste0(file.path, "/")
+  
+  print(paste("Writing CSV files into Google:", filename, "at",  file.path))
+  drive <- drive_upload(
+    media = filename,
+    path  = file.path,
+    name  = filename
+  )
 }
