@@ -207,10 +207,12 @@ log.filename <- paste0(
 write.csv(logs, file = log.filename, row.names = F)
 
 # Authorize google drive to view and manage the ICARIA Drive files
-
+options(gargle_verbosity = "debug")
+print("Authorizing into Google")
+drive_auth(path = kGoogleServiceAccountToken)
 
 # Upload files to Google Drive 
-kDriveDataPath <- "/Data"
+kDriveDataPath <- "Data"
 
 year <- format(data.date, format = "%Y")
 month <- format(data.date, format = "%m")
@@ -223,6 +225,7 @@ participants.path <- paste(
 )
 participants.path <- paste0(participants.path, "/")
 
+print(paste("Writing CSV files into Google:", participants.filename, "at",  participants.path))
 drive <- drive_upload(
   media = participants.filename,
   path  = participants.path
