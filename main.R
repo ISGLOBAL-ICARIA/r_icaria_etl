@@ -206,7 +206,7 @@ log.filename <- paste0(
 write.csv(logs, file = log.filename, row.names = F)
 
 # Load data files
-LoadAuthorize()
+LoadAuthorize(kGoogleServiceAccountToken)
 LoadDataFile(data.date, kDriveDataPath, kParticipantsFile, participants.filename)
 LoadDataFile(data.date, kDriveDataPath, kSAEsFile, saes.filename)
 LoadDataFile(data.date, kDriveDataPath, kLogFile, log.filename)

@@ -256,15 +256,50 @@ TransformCreateSAETable <- function(data) {
   
 }
 
-LoadAuthorize <- function() {
-  # Authorize google drive to view and manage the ICARIA Drive files
-  options(gargle_verbosity = "debug")
+LoadAuthorize <- function(token) {
+  # Authorize google drive to view and manage the ICARIA Drive files. This 
+  # authorization is done through a service account (in Google Cloud 
+  # Organization) and by using a token. This service account is managed in the
+  # context of a Google Cloud Project. This project and its resources can be
+  # configured through https://console.cloud.google.com/
+  #
+  # Args:
+  #   token: String representing the path to the Google Service Account token 
+  #          json file containing the private key to authenticate and access 
+  #          Google Drive.
+  # 
+  # Returns:
+  #   Nothing
+  
+  # options(gargle_verbosity = "debug")
   print("Authorizing into Google")
-  drive_auth(path = kGoogleServiceAccountToken)
+  drive_auth(path = token)
 }
 
 LoadDataFile <- function(data.date, drive.data.path, file.path, filename) {
-  browser()
+  # Upload a data file to Google Drive. Before using this function the 
+  # authentication with Google Cloud should have happened sucessfully (See
+  # function LoadAuthorize). Furthermore, the Google Drive API must be enabled
+  # into the Google Cloud Platform and the authenticated service account should
+  # have permissions to use this API. Data files will be uploaded in the 
+  # specified Drive path and organized by year and month. These year and month
+  # sub-directories are created automatically vy this functions if they are not
+  # in place yet.
+  #
+  # Args:
+  #   data.date:       POSIXct date when the data file was produced.
+  #   drive.data.path: String representing the base folder where ETL data files 
+  #                    will be arranged and stored.
+  #   file.path:       String representing the specific folder where this 
+  #                    concrete data file will be stored. The specific folder 
+  #                    should be created under the base folder (indicated in 
+  #                    drive.data.path).
+  #   filename:        String representing the name of the data file to be 
+  #                    uploaded.
+  # 
+  # Returns:
+  #   Nothing
+  
   # Build Google Drive file path and check if it exits or create it otherwise
   year <- format(data.date, format = "%Y")
   month <- format(data.date, format = "%m")
