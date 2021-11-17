@@ -215,3 +215,8 @@ LoadAuthorize(kGoogleServiceAccountToken)
 LoadDataFile(data.date, kDriveDataPath, kParticipantsFile, participants.filename)
 LoadDataFile(data.date, kDriveDataPath, kSAEsFile, saes.filename)
 LoadDataFile(data.date, kDriveDataPath, kLogFile, log.filename)
+
+# Remove local data files as they were already uploaded to Drive
+file.remove(participants.filename)
+file.remove(saes.filename)
+file.remove(log.filename)
