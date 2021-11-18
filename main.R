@@ -1,7 +1,9 @@
+# Folder where these scripts will be installed in the server
+kWorkingDirectory <- "/home/maramirez/Proyectos/ICARIA/r_icaria_etl/"
+setwd(kWorkingDirectory)
+
 source("tokens.R")
 source("etl.R")
-
-setwd(kWorkingDirectory)
 
 # READ MODEL (ENTITIES) --------------------------------------------------------
 participant <- read.csv(
